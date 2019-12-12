@@ -14,6 +14,9 @@ TextureImporter:
   - first:
       213: 1017530714370438874
     second: kangaroo_3
+  - first:
+      213: -6099834874820539613
+    second: kangaroo_4
   externalObjects: {}
   serializedVersion: 10
   mipmaps:
@@ -112,7 +115,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 4bcf871c9c0c53845bf9c06786a382ea
+      spriteID: aa9fd1a39d7c14a418c2842982c70a69
       internalID: 2224390043230024828
       vertices: []
       indices: 
@@ -133,7 +136,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: c05bc7bb9bcf3f44f8f613de64b46081
+      spriteID: 8dc2e00bf1d81fd49948e21d5f207062
       internalID: 5878919345016848016
       vertices: []
       indices: 
@@ -154,7 +157,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 1f496cc1648b84f42ae978ccd0c4f26d
+      spriteID: 667fccb474011eb42ba2a12fb0a8fb11
       internalID: 7497077736554396732
       vertices: []
       indices: 
@@ -162,6 +165,27 @@ TextureImporter:
       weights: []
     - serializedVersion: 2
       name: kangaroo_3
+      rect:
+        serializedVersion: 2
+        x: 235
+        y: 129
+        width: 165
+        height: 99
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: cdf7adb65a77f6640b27105ea2a90622
+      internalID: 1017530714370438874
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: kangaroo_4
       rect:
         serializedVersion: 2
         x: 40
@@ -175,8 +199,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 73f6bfce19966244b9f5426dc337ba92
-      internalID: 1017530714370438874
+      spriteID: 6e7c4944147d7114ea2c4c0b320b54d8
+      internalID: -6099834874820539613
       vertices: []
       indices: 
       edges: []

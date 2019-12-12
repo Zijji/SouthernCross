@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.44657844, g: 0.49641222, b: 0.57481694, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -250,6 +250,8 @@ MonoBehaviour:
   disGround: 0
   jumpPower: 0
   xdrag: 0
+  isPunching: 0
+  thisAnimator: {fileID: 0}
 --- !u!212 &590202073
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -448,6 +450,7 @@ GameObject:
   - component: {fileID: 901120836}
   - component: {fileID: 901120837}
   - component: {fileID: 901120834}
+  - component: {fileID: 901120839}
   m_Layer: 0
   m_Name: Kangaroo
   m_TagString: Untagged
@@ -552,6 +555,8 @@ MonoBehaviour:
   disGround: 0
   jumpPower: 300
   xdrag: 0.9
+  isPunching: 0
+  thisAnimator: {fileID: 901120839}
 --- !u!4 &901120838
 Transform:
   m_ObjectHideFlags: 0
@@ -569,6 +574,25 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!95 &901120839
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 901120833}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: cfab98df43f28484c8bf11d3eea6a98d, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &963194225
 GameObject:
   m_ObjectHideFlags: 0

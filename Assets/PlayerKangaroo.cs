@@ -10,6 +10,9 @@ public class PlayerKangaroo : MonoBehaviour
     public float disGround; 
     public float jumpPower;
     public float xdrag;
+    public bool isPunching;
+
+    public Animator thisAnimator;
 
     private Rigidbody rb;
     private float moveHorCur = 0;
@@ -18,19 +21,28 @@ public class PlayerKangaroo : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
         disGround = GetComponent<Collider>().bounds.extents.y;
+        isPunching = false;
     }
 
     // Update is called once per frame
     void FixedUpdate()
     {
+        if(Input.GetButton("Fire1")
+        && (!isPunching) )
+        {
+            isPunching = true;
+            thisAnimator.SetBool("isPunching", true);
+        }
         float moveHor = 0;
         if (Input.GetKey(KeyCode.LeftArrow))
         {
             moveHor = -1;
+            this.GetComponent<SpriteRenderer>().flipX = false;
         }
         else if (Input.GetKey(KeyCode.RightArrow))
         {
             moveHor = 1;
+            this.GetComponent<SpriteRenderer>().flipX = true;
         }
         /*
         if(moveHorCur != moveHor)
@@ -61,11 +73,19 @@ public class PlayerKangaroo : MonoBehaviour
         if(Physics.Raycast(transform.position, -Vector3.up, disGround + 0.1f))  //source: https://answers.unity.com/questions/196381/how-do-i-check-if-my-rigidbody-player-is-grounded.html
         {
             onGround = true;
+            /*
+            if(thisAnimator.GetBool("isJumping") == false)
+            {
+                thisAnimator.SetBool("isJumping", false);
+            }
+             */
         }
         if(onGround && Input.GetKey(KeyCode.UpArrow))
         {
             rb.velocity += Vector3.up * Time.deltaTime * jumpPower;
+            //thisAnimator.SetBool("isJumping", true);
         }
+        thisAnimator.SetBool("isJumping", !onGround);
         float moveVer = Input.GetAxis ("Vertical");
 
         //Debug.Log(moveHor);
@@ -88,5 +108,10 @@ public class PlayerKangaroo : MonoBehaviour
 
         }
         */
+    }
+    public void EndPunchAnimation()
+    {
+        thisAnimator.SetBool("isPunching", false);
+        isPunching = false;
     }
 }
