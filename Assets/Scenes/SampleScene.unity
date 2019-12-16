@@ -550,8 +550,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a08f7ba5ea0ad64bbbba87d4ad86fce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 40
-  accelSpeed: 0
+  speed: 50
+  accelSpeed: 40
   disGround: 0
   jumpPower: 300
   xdrag: 0.9
@@ -1086,7 +1086,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 70637dab5586b374b906c1176faae4eb, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
