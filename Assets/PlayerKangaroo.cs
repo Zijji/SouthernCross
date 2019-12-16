@@ -12,7 +12,12 @@ public class PlayerKangaroo : MonoBehaviour
     public float xdrag;
     public bool isPunching;
     public bool canMove; //if false, stops player movement inputs from working.
-    public int punchCharge = 200;
+    private int punchCharge = 50;
+    private int resetPunchCharge;
+    private int launchCharge = 50;
+    private int resetLaunchCharge;
+    private int punchCooldown = 100;
+    private int resetPunchCooldown;
     public int punchState = 0; //set to 0 for first state, 1 for punching state and 2 for end state. -1 for if not punching.
     public Animator thisAnimator;
 
@@ -26,19 +31,75 @@ public class PlayerKangaroo : MonoBehaviour
         isPunching = false;
         canMove = true;
         punchState = -1;
+        resetPunchCharge = punchCharge;
+        resetLaunchCharge = launchCharge;
+        resetPunchCooldown = punchCooldown;
     }
 
     // Update is called once per frame
     void FixedUpdate()
     {
-        float moveHor = 0;//moved this here
-        if(canMove){//just to check if player inputs are allowed.
-            if(Input.GetButton("Fire1")
-            && (!isPunching) )
-            {
-                isPunching = true;
-                StartPunching();
+        /*
+        Punching code
+
+        Punching concept:
+            when the player presses the punch button, the kangaroo stops moving and enters the charging state. After punchCharge has depleted,
+            the kangaroo enters the next state, where it launches forward with a hitbox. Once launchCharge has depleted, the kangaroo enters the next state.
+            This state is a cooldown state, where the kangaroo cannot move for punchCooldown amount of time.
+        */
+        
+        if(Input.GetButton("Fire1")
+        && (!isPunching) )
+        {
+            isPunching = true;//activates later code;
+            punchState = 0;
+        }
+
+        if(isPunching){
+            thisAnimator.SetBool("isPunching", true);
+            canMove = false;
+            if(punchState == 0){
+                thisAnimator.SetInteger("punchState", 0);
+                punchCharge -= 1;
             }
+            if(punchState == 1){
+                thisAnimator.SetInteger("punchState", 1);
+                launchCharge -= 1;
+            }
+            if(punchState == 2){
+                thisAnimator.SetInteger("punchState", 2);
+                punchCooldown -= 1;
+            }
+            if(punchCharge <= 0){
+                    punchState = 1;
+                }
+            if(launchCharge <= 0){
+                punchState = 2;
+            }
+            if(punchCooldown <= 0){
+                thisAnimator.SetInteger("punchState", -1);
+                punchState = -1;//punch is over
+                resetValues();
+            }
+        }
+
+    //        public void StartPunching(){
+    //     if(punchCharge <= 0){
+    //         isPunching = false;
+    //         thisAnimator.SetInteger("punchState", -1);
+            
+    //         canMove = true;
+    //     }
+    //     thisAnimator.SetInteger("punchState", 0);
+    //     canMove = false;
+    //     if(punchCharge <=0){
+    //         punchCharge -= 1;
+    //     }
+    // }      
+
+        //flipping
+        float moveHor = 0;//moved this here
+        if(canMove){
             //float moveHor = 0; //moved outside of scope
             if (Input.GetKey(KeyCode.LeftArrow))
             {
@@ -87,7 +148,7 @@ public class PlayerKangaroo : MonoBehaviour
             }
              */
         }
-        if(onGround && Input.GetKey(KeyCode.UpArrow))
+        if(onGround && Input.GetKey(KeyCode.UpArrow)&&canMove)
         {
             rb.velocity += Vector3.up * Time.deltaTime * jumpPower;
             //thisAnimator.SetBool("isJumping", true);
@@ -117,19 +178,18 @@ public class PlayerKangaroo : MonoBehaviour
         */
     }
 
-    public void StartPunching(){
-        if(punchCharge <= 0){
-            punchPhase2();//redirects to next phase
-        }
-        thisAnimator.SetInteger("punchState", 0);
-        canMove = false;
-        punchCharge -= 1;
-        
-    }
-
     public void EndPunchAnimation()
     {
         thisAnimator.SetBool("isPunching", false);
         isPunching = false;
+    }
+
+
+    public void resetValues(){//for use when punching is done.
+        punchCharge = resetPunchCharge;
+        launchCharge = resetLaunchCharge;
+        punchCooldown = resetPunchCooldown;
+        isPunching = false;
+        canMove = true;
     }
 }
