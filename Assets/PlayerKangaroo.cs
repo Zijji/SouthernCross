@@ -18,11 +18,15 @@ public class PlayerKangaroo : MonoBehaviour
     private int resetLaunchCharge;
     private int punchCooldown = 100;
     private int resetPunchCooldown;
-    public int punchState = 0; //set to 0 for first state, 1 for punching state and 2 for end state. -1 for if not punching.
+    //public int punchState = 0; //set to 0 for first state, 1 for punching state and 2 for end state. -1 for if not punching.
+    public enum PunchState {notPunching, windUp, punch, cooldown};
+    private PunchState curPunchState = PunchState.notPunching; 
+    private float punchSpeed = 50f;
     public Animator thisAnimator;
 
     private Rigidbody rb;
     private float moveHorCur = 0;
+   
     // Start is called before the first frame update
     void Start()
     {
@@ -30,7 +34,7 @@ public class PlayerKangaroo : MonoBehaviour
         disGround = GetComponent<Collider>().bounds.extents.y;
         isPunching = false;
         canMove = true;
-        punchState = -1;
+        //punchState = -1;
         resetPunchCharge = punchCharge;
         resetLaunchCharge = launchCharge;
         resetPunchCooldown = punchCooldown;
@@ -47,38 +51,39 @@ public class PlayerKangaroo : MonoBehaviour
             the kangaroo enters the next state, where it launches forward with a hitbox. Once launchCharge has depleted, the kangaroo enters the next state.
             This state is a cooldown state, where the kangaroo cannot move for punchCooldown amount of time.
         */
-        
+
         if(Input.GetButton("Fire1")
         && (!isPunching) )
         {
             isPunching = true;//activates later code;
-            punchState = 0;
+            //punchState = 0;
+            curPunchState = PunchState.windUp;
         }
 
         if(isPunching){
             thisAnimator.SetBool("isPunching", true);
             canMove = false;
-            if(punchState == 0){
+            if(curPunchState == PunchState.windUp){
                 thisAnimator.SetInteger("punchState", 0);
                 punchCharge -= 1;
             }
-            if(punchState == 1){
+            if(curPunchState == PunchState.punch){
                 thisAnimator.SetInteger("punchState", 1);
                 launchCharge -= 1;
             }
-            if(punchState == 2){
+            if(curPunchState == PunchState.cooldown){
                 thisAnimator.SetInteger("punchState", 2);
                 punchCooldown -= 1;
             }
             if(punchCharge <= 0){
-                    punchState = 1;
+                    curPunchState = PunchState.punch;
                 }
             if(launchCharge <= 0){
-                punchState = 2;
+                curPunchState = PunchState.cooldown;
             }
             if(punchCooldown <= 0){
                 thisAnimator.SetInteger("punchState", -1);
-                punchState = -1;//punch is over
+                curPunchState = PunchState.notPunching;//punch is over
                 resetValues();
             }
         }
@@ -157,8 +162,15 @@ public class PlayerKangaroo : MonoBehaviour
         float moveVer = Input.GetAxis ("Vertical");
 
         //Debug.Log(moveHor);
-        Vector3 movement = new Vector3 (moveHor, 0.0f, 0.0f );
-
+        Vector3 movement = new Vector3 (moveHor, 0.0f, 0.0f ); //if canMove = false, this won't do anything
+        int dirFacing = -1;//gets the direction facing
+        if(this.GetComponent<SpriteRenderer>().flipX){
+            dirFacing = 1;
+        }
+        if(curPunchState == PunchState.punch){
+            movement = new Vector3(dirFacing, 0.0f, 0.0f);
+            speed = punchSpeed;
+        }
         //transform.position += movement * speed * Time.deltaTime;
         rb.velocity += movement * speed * Time.deltaTime;
         rb.velocity = new Vector3(rb.velocity.x * xdrag, rb.velocity.y, rb.velocity.z);
