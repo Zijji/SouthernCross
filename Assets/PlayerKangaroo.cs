@@ -12,16 +12,16 @@ public class PlayerKangaroo : MonoBehaviour
     public float xdrag;
     public bool isPunching;
     public bool canMove; //if false, stops player movement inputs from working.
-    private int punchCharge = 50;
+    public int punchCharge = 50;
     private int resetPunchCharge;
-    private int launchCharge = 50;
+    public int launchCharge = 50;
     private int resetLaunchCharge;
-    private int punchCooldown = 100;
+    public int punchCooldown = 100;
     private int resetPunchCooldown;
     //public int punchState = 0; //set to 0 for first state, 1 for punching state and 2 for end state. -1 for if not punching.
     public enum PunchState {notPunching, windUp, punch, cooldown};
     private PunchState curPunchState = PunchState.notPunching; 
-    private float punchSpeed = 50f;
+    public float punchSpeed = 50f;
     public Animator thisAnimator;
 
     private Rigidbody rb;
@@ -43,6 +43,13 @@ public class PlayerKangaroo : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
+        //Calculates onGround to prevent falling while punching in mid air.
+        bool onGround = false;
+        if(Physics.Raycast(transform.position, -Vector3.up, disGround + 0.1f))  //source: https://answers.unity.com/questions/196381/how-do-i-check-if-my-rigidbody-player-is-grounded.html
+        {
+            onGround = true;
+        }
+
         /*
         Punching code
 
@@ -58,6 +65,11 @@ public class PlayerKangaroo : MonoBehaviour
             isPunching = true;//activates later code;
             //punchState = 0;
             curPunchState = PunchState.windUp;
+            if(!onGround){
+                rb.useGravity = false;
+                rb.velocity = new Vector3(rb.velocity.x, 0.0f, rb.velocity.z);
+            }
+            
         }
 
         if(isPunching){
@@ -84,6 +96,10 @@ public class PlayerKangaroo : MonoBehaviour
             if(punchCooldown <= 0){
                 thisAnimator.SetInteger("punchState", -1);
                 curPunchState = PunchState.notPunching;//punch is over
+                if(!rb.useGravity)
+                {
+                    rb.useGravity = true;
+                }
                 resetValues();
             }
         }
@@ -141,18 +157,7 @@ public class PlayerKangaroo : MonoBehaviour
             moveHorizontal = 1;
         }
         */
-        bool onGround = false;
         
-        if(Physics.Raycast(transform.position, -Vector3.up, disGround + 0.1f))  //source: https://answers.unity.com/questions/196381/how-do-i-check-if-my-rigidbody-player-is-grounded.html
-        {
-            onGround = true;
-            /*
-            if(thisAnimator.GetBool("isJumping") == false)
-            {
-                thisAnimator.SetBool("isJumping", false);
-            }
-             */
-        }
         if(onGround && Input.GetKey(KeyCode.UpArrow)&&canMove)
         {
             rb.velocity += Vector3.up * Time.deltaTime * jumpPower;
@@ -167,12 +172,17 @@ public class PlayerKangaroo : MonoBehaviour
         if(this.GetComponent<SpriteRenderer>().flipX){
             dirFacing = 1;
         }
+        float moveSpeed = 0.0f; //Actual speed that the character moves at.
         if(curPunchState == PunchState.punch){
             movement = new Vector3(dirFacing, 0.0f, 0.0f);
-            speed = punchSpeed;
+            moveSpeed = punchSpeed;
+        }
+        else if(curPunchState == PunchState.notPunching)// if(curPunchState !=)
+        {
+            moveSpeed = speed;
         }
         //transform.position += movement * speed * Time.deltaTime;
-        rb.velocity += movement * speed * Time.deltaTime;
+        rb.velocity += movement * moveSpeed * Time.deltaTime;
         rb.velocity = new Vector3(rb.velocity.x * xdrag, rb.velocity.y, rb.velocity.z);
         Debug.Log(rb.velocity);
 
