@@ -25,18 +25,17 @@ public class DropBear : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Vector3 movement = new Vector3(0.0f, 0.0f, 0.0f);//resetting this for next frame
+        Vector3 movement = new Vector3(0.0f, 0.0f, 0.0f);//resetting this for next frame. This is direction
         //if(player){
         float distance = trans.position.x - player.GetComponent<Transform>().position.x;
+
+        Debug.Log(distance);
         if(distance <= 10 && distance >= -10){
             //distance will be negative if player is right of DropBear, positive if on left
             //run towards player
             if(Mathf.Sign(distance)*distance > attackDistance){
-                if(distance > 0){
-                    movement = new Vector3(Mathf.Sign(-distance), 0.0f, 0.0f);
-                } else {
-                    movement = new Vector3(Mathf.Sign(distance), 0.0f, 0.0f);
-                }
+                movement = new Vector3(Mathf.Sign(-distance), 0.0f, 0.0f);
+            
 
             }
 
