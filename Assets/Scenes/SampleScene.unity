@@ -1507,6 +1507,7 @@ MonoBehaviour:
   attackCharge: 50
   launchCharge: 10
   attackCooldown: 50
+  attackSpeed: 50
   thisAnimator: {fileID: 2048763217}
 --- !u!54 &2048763216
 Rigidbody:

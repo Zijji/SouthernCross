@@ -9,6 +9,7 @@ public class DropBear : MonoBehaviour
     private GameObject player;
     public float attackDistance;
     public float moveSpeed;
+    private float moveSpeedSet;
     public float xdrag;
     private bool isAttacking;
     public int attackCharge = 50;
@@ -17,6 +18,7 @@ public class DropBear : MonoBehaviour
     private int launchChargeReset;
     public int attackCooldown = 100;
     public int attackSpeed;
+
     private int attackCooldownReset;
     public Animator thisAnimator;
     public enum AttackState { notAttacking, windUp, attack, cooldown };
@@ -24,7 +26,7 @@ public class DropBear : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
+        moveSpeedSet = moveSpeed;
         isAttacking = false;
         rb = GetComponent<Rigidbody>();
         trans = GetComponent<Transform>();
@@ -44,34 +46,27 @@ public class DropBear : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Debug.Log(curAttackState);
-        Vector3 dirFacing = new Vector3(0.0f, 0.0f, 0.0f);//resetting this for next frame. This is the direction the DropBear is facing
+        moveSpeed = 0; //resetting this for next frame
+        //distance will be negative if player is right of DropBear, positive if on left
         float distance = trans.position.x - player.GetComponent<Transform>().position.x;
-        if (distance <= 10 && distance >= -10)
+
+        Vector3 dirFacing = new Vector3(Mathf.Sign(-distance), 0.0f, 0.0f);//This is the direction the DropBear is facing
+
+        //run towards player if the player is within range.
+        if (distance <= 10 && distance >= -10 && !isAttacking)
         {
-            //attacking code. Identical to Kangaroo punching code.
-            if (distance <= attackDistance && !isAttacking)
+            moveSpeed = moveSpeedSet;
+            if (Mathf.Sign(distance) * distance <= attackDistance)
             {
                 isAttacking = true;
                 curAttackState = AttackState.windUp;
             }
-
-            if (!isAttacking)
-            {
-                //distance will be negative if player is right of DropBear, positive if on left
-                //run towards player
-                if (Mathf.Sign(distance) * distance > attackDistance)
-                {
-                    dirFacing = new Vector3(Mathf.Sign(-distance), 0.0f, 0.0f);
-                }
-                if(curAttackState == AttackState.attack){
-                    moveSpeed = attackSpeed;
-                }
-                rb.velocity += dirFacing * moveSpeed * Time.deltaTime;
-                rb.velocity = new Vector3(rb.velocity.x * xdrag, rb.velocity.y, rb.velocity.z);
-            }
         }
-        if (isAttacking){ //separate code block because player might move out of range, stuffing everthing up.
+
+        //attacking code. Identical to Kangaroo punching code.
+        if (isAttacking)
+        { //separate code block because player might move out of range, stuffing everthing up.
+
             thisAnimator.SetBool("isAttacking", true);
             if (curAttackState == AttackState.windUp)
             {
@@ -105,6 +100,19 @@ public class DropBear : MonoBehaviour
             }
         }
 
+        //movement
+        if (curAttackState == AttackState.attack)
+        {
+            moveSpeed = attackSpeed;
+        }
+        //flipping
+        if (distance < 0)
+            this.GetComponent<SpriteRenderer>().flipX = true;
+        if (distance > 0)
+            this.GetComponent<SpriteRenderer>().flipX = false;
+
+        rb.velocity += dirFacing * moveSpeed * Time.deltaTime;
+        rb.velocity = new Vector3(rb.velocity.x * xdrag, rb.velocity.y, rb.velocity.z);
     }
     public void resetValues()
     {
