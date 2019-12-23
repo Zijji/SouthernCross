@@ -12,9 +12,16 @@ public class PlayerKangaroo : MonoBehaviour
     public float xdrag;
     public bool isPunching;
     public bool canMove; //if false, stops player movement inputs from working.
+    public bool canPunch = true;    //If false, disables punch
     public int punchCharge = 50;
     private int resetPunchCharge;
     public int launchCharge = 50;
+
+    //Uppercut variables
+    public bool canUppercut = true;
+    public bool punchIsUppercut = false;
+    public float uppercutSpeed = 50.0f;
+
     private int resetLaunchCharge;
     public int punchCooldown = 100;
     private int resetPunchCooldown;
@@ -45,11 +52,12 @@ public class PlayerKangaroo : MonoBehaviour
     {
         //Calculates onGround to prevent falling while punching in mid air.
         bool onGround = false;
-        if(Physics.Raycast(transform.position, -Vector3.up, disGround + 0.1f))  //source: https://answers.unity.com/questions/196381/how-do-i-check-if-my-rigidbody-player-is-grounded.html
+        LayerMask actorMask = LayerMask.GetMask("Ground");
+        if(Physics.Raycast(transform.position, -Vector3.up, disGround + 0.1f,actorMask))  //source: https://answers.unity.com/questions/196381/how-do-i-check-if-my-rigidbody-player-is-grounded.html
         {
             onGround = true;
         }
-
+        
         /*
         Punching code
 
@@ -59,10 +67,28 @@ public class PlayerKangaroo : MonoBehaviour
             This state is a cooldown state, where the kangaroo cannot move for punchCooldown amount of time.
         */
 
-        if(Input.GetButton("Fire1")
-        && (!isPunching) )
+
+        //Re enables punch
+        if(onGround && curPunchState == PunchState.notPunching)
         {
+            canPunch = true;
+        }
+        if(Input.GetButton("Fire1")
+        && !isPunching 
+        && canPunch)
+        {
+            if(Input.GetKey(KeyCode.UpArrow))
+            {
+                punchIsUppercut = true;
+                transform.Rotate(transform.rotation.x,transform.rotation.y,-90.0f);
+                this.GetComponent<SpriteRenderer>().flipX = this.GetComponent<SpriteRenderer>().flipY;
+            }
+            else
+            {
+                punchIsUppercut = false;
+            }
             isPunching = true;//activates later code;
+            canPunch = false;
             //punchState = 0;
             curPunchState = PunchState.windUp;
             if(!onGround){
@@ -96,6 +122,11 @@ public class PlayerKangaroo : MonoBehaviour
             if(punchCooldown <= 0){
                 thisAnimator.SetInteger("punchState", -1);
                 curPunchState = PunchState.notPunching;//punch is over
+                if(punchIsUppercut)
+                {
+                    transform.Rotate(transform.rotation.x,transform.rotation.y,90.0f);
+                    this.GetComponent<SpriteRenderer>().flipY = false;
+                }
                 if(!rb.useGravity)
                 {
                     rb.useGravity = true;
@@ -173,9 +204,19 @@ public class PlayerKangaroo : MonoBehaviour
             dirFacing = 1;
         }
         float moveSpeed = 0.0f; //Actual speed that the character moves at.
+        //Moves character when punching
         if(curPunchState == PunchState.punch){
-            movement = new Vector3(dirFacing, 0.0f, 0.0f);
-            moveSpeed = punchSpeed;
+            if(punchIsUppercut)
+            {
+                movement = new Vector3(0.0f, 1.0f, 0.0f);  //
+                moveSpeed = uppercutSpeed;
+            }
+            else
+            {
+                movement = new Vector3(dirFacing, 0.0f, 0.0f);
+                moveSpeed = punchSpeed;
+
+            }
         }
         else if(curPunchState == PunchState.notPunching)// if(curPunchState !=)
         {
