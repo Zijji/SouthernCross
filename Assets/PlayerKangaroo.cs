@@ -104,6 +104,14 @@ public class PlayerKangaroo : MonoBehaviour
             }
         }
 
+
+    /*
+        Uppercut code:
+        
+        Uppercut concept: 
+            Kangaroo launches upward on a slightly forwards trajectory. 
+    */
+
     //        public void StartPunching(){
     //     if(punchCharge <= 0){
     //         isPunching = false;
