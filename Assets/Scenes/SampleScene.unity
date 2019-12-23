@@ -1403,6 +1403,7 @@ GameObject:
   - component: {fileID: 2048763212}
   - component: {fileID: 2048763215}
   - component: {fileID: 2048763216}
+  - component: {fileID: 2048763217}
   m_Layer: 8
   m_Name: DropBear
   m_TagString: Untagged
@@ -1482,7 +1483,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2048763211}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.65, y: -0.11, z: 0}
+  m_LocalPosition: {x: 8.43, y: -0.11, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -1503,6 +1504,10 @@ MonoBehaviour:
   attackDistance: 2
   moveSpeed: 25
   xdrag: 0.9
+  attackCharge: 50
+  launchCharge: 10
+  attackCooldown: 50
+  thisAnimator: {fileID: 2048763217}
 --- !u!54 &2048763216
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1519,6 +1524,25 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
+--- !u!95 &2048763217
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2048763211}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 3b349dc0a8edb7b4f91e2e7e99ed7c5c, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &2065069767
 GameObject:
   m_ObjectHideFlags: 0
