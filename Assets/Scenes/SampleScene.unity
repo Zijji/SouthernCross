@@ -1401,6 +1401,8 @@ GameObject:
   - component: {fileID: 2048763214}
   - component: {fileID: 2048763213}
   - component: {fileID: 2048763212}
+  - component: {fileID: 2048763215}
+  - component: {fileID: 2048763216}
   m_Layer: 0
   m_Name: DropBear
   m_TagString: Untagged
@@ -1480,12 +1482,42 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2048763211}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 9.01, y: 0, z: 0}
+  m_LocalPosition: {x: 9.01, y: -0.224, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 13
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2048763215
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2048763211}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e2a50c4a13957e4aa5bec1722d20503, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  attackDistance: 4
+  moveSpeed: 10
+--- !u!54 &2048763216
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2048763211}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 112
+  m_CollisionDetection: 0
 --- !u!1 &2065069767
 GameObject:
   m_ObjectHideFlags: 0
@@ -1599,7 +1631,7 @@ PrefabInstance:
     - target: {fileID: 4621651504312548113, guid: ac3935561a02079469b35680c97282a9,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 1.99
+      value: 13.36
       objectReference: {fileID: 0}
     - target: {fileID: 4621651504312548113, guid: ac3935561a02079469b35680c97282a9,
         type: 3}
