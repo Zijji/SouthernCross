@@ -32,7 +32,17 @@ public class PlayerKangaroo : MonoBehaviour
     public Animator thisAnimator;
 
     private Rigidbody rb;
-    private float moveHorCur = 0;
+    //private float moveHorCur = 0;
+
+    public GameObject[] hitBoxLoc;     //The positions of the hitbox objects inside the array is important. 0 = left; 1 = right; 2 = leftUpper; 3 = rightUpper;
+
+    public GameObject hitBox;
+
+    //PunchType used for creating hitboxes
+    public enum PunchType {left, right, leftupper, rightupper};
+    private PunchType curPunchType;
+
+    
    
     // Start is called before the first frame update
     void Start()
@@ -80,12 +90,37 @@ public class PlayerKangaroo : MonoBehaviour
             if(Input.GetKey(KeyCode.UpArrow))
             {
                 punchIsUppercut = true;
-                transform.Rotate(transform.rotation.x,transform.rotation.y,-90.0f);
-                this.GetComponent<SpriteRenderer>().flipX = this.GetComponent<SpriteRenderer>().flipY;
+                //transform.Rotate(transform.rotation.x,transform.rotation.y,-90.0f);
+                //this.GetComponent<SpriteRenderer>().flipX = this.GetComponent<SpriteRenderer>().flipY;
             }
             else
             {
                 punchIsUppercut = false;
+            }
+            //Gets punch type (uppercut, left or right)
+            
+
+            if(this.GetComponent<SpriteRenderer>().flipX == true)
+            {
+                if(punchIsUppercut)
+                {
+                    curPunchType = PunchType.rightupper;
+                }
+                else
+                {
+                    curPunchType = PunchType.right;
+                }
+            }
+            else
+            {
+                if(punchIsUppercut)
+                {
+                    curPunchType = PunchType.leftupper;
+                }
+                else
+                {
+                    curPunchType = PunchType.left;
+                }
             }
             isPunching = true;//activates later code;
             canPunch = false;
@@ -108,10 +143,13 @@ public class PlayerKangaroo : MonoBehaviour
             if(curPunchState == PunchState.punch){
                 thisAnimator.SetInteger("punchState", 1);
                 launchCharge -= 1;
+                //Creates hitbox for punches
+                CreateHitbox();
             }
             if(curPunchState == PunchState.cooldown){
                 thisAnimator.SetInteger("punchState", 2);
                 punchCooldown -= 1;
+                CreateHitbox();
             }
             if(punchCharge <= 0){
                     curPunchState = PunchState.punch;
@@ -124,7 +162,7 @@ public class PlayerKangaroo : MonoBehaviour
                 curPunchState = PunchState.notPunching;//punch is over
                 if(punchIsUppercut)
                 {
-                    transform.Rotate(transform.rotation.x,transform.rotation.y,90.0f);
+                    //transform.Rotate(transform.rotation.x,transform.rotation.y,90.0f);
                     this.GetComponent<SpriteRenderer>().flipY = false;
                 }
                 if(!rb.useGravity)
@@ -239,6 +277,29 @@ public class PlayerKangaroo : MonoBehaviour
 
         }
         */
+    }
+
+    private void CreateHitbox()
+    {
+        GameObject nHB;
+        int hitBoxLocIndex = 0;
+        switch(curPunchType)
+        {
+            case PunchType.left:
+                hitBoxLocIndex = 0;
+                break;
+            case PunchType.right:
+                hitBoxLocIndex = 1;
+                break;
+            case PunchType.leftupper:
+                hitBoxLocIndex = 2;
+                break;
+            case PunchType.rightupper:
+                hitBoxLocIndex = 3;
+                break;
+        }
+        nHB = Instantiate(hitBox, hitBoxLoc[hitBoxLocIndex].transform.position,Quaternion.identity);
+        Destroy(nHB, 0.05f); 
     }
 
     public void EndPunchAnimation()
