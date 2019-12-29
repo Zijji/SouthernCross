@@ -1404,7 +1404,8 @@ GameObject:
   - component: {fileID: 2048763215}
   - component: {fileID: 2048763216}
   - component: {fileID: 2048763217}
-  m_Layer: 8
+  - component: {fileID: 2048763218}
+  m_Layer: 0
   m_Name: DropBear
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1544,6 +1545,25 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &2048763218
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2048763211}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80844988bdf8a3f40becd3b06047fa05, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  thisAnimator: {fileID: 0}
+  playerPunching: 0
+  canPunched: 1
+  canJumped: 1
+  canUppercut: 1
+  launchSpeedX: 50
+  launchSpeedY: 75
 --- !u!1 &2065069767
 GameObject:
   m_ObjectHideFlags: 0
@@ -1748,6 +1768,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Layer
       value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 4621651504312548118, guid: ac3935561a02079469b35680c97282a9,
+        type: 3}
+      propertyPath: m_TagString
+      value: Player
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ac3935561a02079469b35680c97282a9, type: 3}

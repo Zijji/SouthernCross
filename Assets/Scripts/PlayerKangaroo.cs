@@ -203,7 +203,7 @@ public class PlayerKangaroo : MonoBehaviour
         //transform.position += movement * speed * Time.deltaTime;
         rb.velocity += movement * moveSpeed * Time.deltaTime;
         rb.velocity = new Vector3(rb.velocity.x * xdrag, rb.velocity.y, rb.velocity.z);
-        Debug.Log(rb.velocity);
+        //Debug.Log(rb.velocity);
 
 
         //transform.Translate(movement * speed * Time.deltaTime);
