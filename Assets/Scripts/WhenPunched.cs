@@ -39,7 +39,7 @@ public class WhenPunched : MonoBehaviour
     }
 
     //if the player collides with the current object, is punching and the current object can be punched
-    //Current issue: this script will need to be personalised for each user, as some scripts will need to disable other components to work.
+    //Current issue: this script will need to be personalised for each object, as some scripts will need to disable other components to work.
     void OnCollisionEnter(Collision col){
         //Debug.Log("Collided");
         if(col.collider.gameObject.name == "Kangaroo" && canPunched && playerPunching){
