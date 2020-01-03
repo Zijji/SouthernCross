@@ -175,7 +175,7 @@ public class PlayerKangaroo : MonoBehaviour
         }
         */
 
-        if (onGround && Input.GetKey(KeyCode.UpArrow) && canMove)
+        if (onGround && Input.GetButton("Jump") && canMove)
         {
             rb.velocity += Vector3.up * Time.deltaTime * jumpPower;
             //thisAnimator.SetBool("isJumping", true);
