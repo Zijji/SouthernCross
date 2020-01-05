@@ -10,17 +10,28 @@ public class PlayerKangaroo : MonoBehaviour
     public float disGround;
     public float jumpPower;
     public float xdrag;
+
     public bool isPunching;
+    public bool isUppercut;
     public bool canMove; //if false, stops player movement inputs from working.
+    
     public int punchCharge = 50;
     private int resetPunchCharge;
     public int launchCharge = 50;
     private int resetLaunchCharge;
     public int punchCooldown = 100;
     private int resetPunchCooldown;
+    public int uppercutCooldown = 4;       //Time spent in uppercut stage 1. stages 2,3,4 are based on whether the roo is rising or falling
+    private int uppercutWait = 0;       //Time spent in uppercut stage 1. stages 2,3,4 are based on whether the roo is rising or falling
+
     //public int punchState = 0; //set to 0 for first state, 1 for punching state and 2 for end state. -1 for if not punching.
     public enum PunchState { notPunching, windUp, punch, cooldown };
     private PunchState curPunchState = PunchState.notPunching;
+
+    //public int punchState = 0; //set to 0 for first state, 1 for punching state and 2 for end state. -1 for if not punching.
+    public enum UppercutState { notUppercut, windUp, uppercut, rising, peaking, falling };
+    private UppercutState curUppercutState = UppercutState.notUppercut;
+    
     public float punchSpeed = 50f;
     public Animator thisAnimator;
 
@@ -33,6 +44,7 @@ public class PlayerKangaroo : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         disGround = GetComponent<Collider>().bounds.extents.y;
         isPunching = false;
+        isUppercut = false;
         canMove = true;
         //punchState = -1;
         resetPunchCharge = punchCharge;
@@ -63,53 +75,100 @@ public class PlayerKangaroo : MonoBehaviour
         && (!isPunching))
         {
             isPunching = true;//activates later code;
-            //punchState = 0;
-            curPunchState = PunchState.windUp;
-            if (!onGround)
+            //Note: isPunching is active no matter what the punch, isUppercut only activates when uppercut punching
+            isUppercut = false;
+            if (Input.GetAxis("Vertical") > 0)
             {
-                rb.useGravity = false;
-                rb.velocity = new Vector3(rb.velocity.x, 0.0f, rb.velocity.z);
+                isUppercut = true;
             }
+            else
+            {
+                //punchState = 0;
+                curPunchState = PunchState.windUp;
+                if (!onGround)
+                {
+                    rb.useGravity = false;
+                    rb.velocity = new Vector3(rb.velocity.x, 0.0f, rb.velocity.z);
+                }
+            }
+            
 
         }
 
         if (isPunching)
         {
-            thisAnimator.SetBool("isPunching", true);
             canMove = false;
-            if (curPunchState == PunchState.windUp)
+            if(isUppercut)
             {
-                thisAnimator.SetInteger("punchState", 0);
-                punchCharge -= 1;
-            }
-            if (curPunchState == PunchState.punch)
-            {
-                thisAnimator.SetInteger("punchState", 1);
-                launchCharge -= 1;
-            }
-            if (curPunchState == PunchState.cooldown)
-            {
-                thisAnimator.SetInteger("punchState", 2);
-                punchCooldown -= 1;
-            }
-            if (punchCharge <= 0)
-            {
-                curPunchState = PunchState.punch;
-            }
-            if (launchCharge <= 0)
-            {
-                curPunchState = PunchState.cooldown;
-            }
-            if (punchCooldown <= 0)
-            {
-                thisAnimator.SetInteger("punchState", -1);
-                curPunchState = PunchState.notPunching;//punch is over
-                if (!rb.useGravity)
+                switch(curUppercutState)
                 {
-                    rb.useGravity = true;
+                    case UppercutState.notUppercut:      //Note: Does not use windup right now, may need it in future.
+                        curUppercutState = UppercutState.uppercut;
+                        uppercutWait = uppercutCooldown;
+                        thisAnimator.SetBool("isUppercut", true);
+                        break;
+                    case UppercutState.windUp:      //Note: Does not use windup right now, may need it in future.
+                        break;
+                    case UppercutState.uppercut:
+                        uppercutWait--;
+                        if(uppercutWait <= 0)
+                        {
+                            uppercutWait = 0;
+                            thisAnimator.SetInteger("uppercutState", 1);
+                            curUppercutState = UppercutState.rising;
+                        }
+                        break;
+                    case UppercutState.rising:
+                        if(onGround)    
+                        {
+                            thisAnimator.SetBool("isUppercut", false);
+                            thisAnimator.SetInteger("uppercutState", 0);
+                            isPunching = false;
+                            isUppercut = false;
+                            canMove = true;
+                            curUppercutState = UppercutState.notUppercut;
+                        }
+                        break;
                 }
-                resetValues();
             }
+            else
+            {
+                thisAnimator.SetBool("isPunching", true);
+                if (curPunchState == PunchState.windUp)
+                {
+                    thisAnimator.SetInteger("punchState", 0);
+                    punchCharge -= 1;
+                }
+                if (curPunchState == PunchState.punch)
+                {
+                    thisAnimator.SetInteger("punchState", 1);
+                    launchCharge -= 1;
+                }
+                if (curPunchState == PunchState.cooldown)
+                {
+                    thisAnimator.SetInteger("punchState", 2);
+                    punchCooldown -= 1;
+                }
+                if (punchCharge <= 0)
+                {
+                    curPunchState = PunchState.punch;
+                }
+                if (launchCharge <= 0)
+                {
+                    curPunchState = PunchState.cooldown;
+                }
+                if (punchCooldown <= 0)
+                {
+                    thisAnimator.SetInteger("punchState", -1);
+                    curPunchState = PunchState.notPunching;//punch is over
+                    if (!rb.useGravity)
+                    {
+                        rb.useGravity = true;
+                    }
+                    resetValues();
+                }
+            }
+            
         }
 
 
@@ -191,12 +250,17 @@ public class PlayerKangaroo : MonoBehaviour
             dirFacing = 1;
         }
         float moveSpeed = 0.0f; //Actual speed that the character moves at.
-        if (curPunchState == PunchState.punch)
+        if(isUppercut && curUppercutState == UppercutState.uppercut)
+        {
+            movement = new Vector3(0.0f, 1.0f, 0.0f);
+            moveSpeed = punchSpeed;
+        }
+        else if (curPunchState == PunchState.punch)
         {
             movement = new Vector3(dirFacing, 0.0f, 0.0f);
             moveSpeed = punchSpeed;
         }
-        else if (curPunchState == PunchState.notPunching)// if(curPunchState !=)
+        else// if (curPunchState == PunchState.notPunching)// if(curPunchState !=)
         {
             moveSpeed = speed;
         }

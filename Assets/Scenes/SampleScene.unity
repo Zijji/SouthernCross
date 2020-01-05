@@ -251,10 +251,12 @@ MonoBehaviour:
   jumpPower: 0
   xdrag: 0
   isPunching: 0
+  isUppercut: 0
   canMove: 0
   punchCharge: 50
   launchCharge: 50
   punchCooldown: 100
+  uppercutCooldown: 100
   punchSpeed: 50
   thisAnimator: {fileID: 0}
 --- !u!212 &590202073
@@ -1682,7 +1684,7 @@ PrefabInstance:
     - target: {fileID: 4621651504312548113, guid: ac3935561a02079469b35680c97282a9,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 3.61
+      value: 2.63
       objectReference: {fileID: 0}
     - target: {fileID: 4621651504312548113, guid: ac3935561a02079469b35680c97282a9,
         type: 3}
@@ -1754,11 +1756,22 @@ PrefabInstance:
       propertyPath: xdrag
       value: 0.9
       objectReference: {fileID: 0}
+    - target: {fileID: 4621651504312548114, guid: ac3935561a02079469b35680c97282a9,
+        type: 3}
+      propertyPath: uppercutCooldown
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 4621651504312548115, guid: ac3935561a02079469b35680c97282a9,
         type: 3}
       propertyPath: m_FlipX
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4621651504312548115, guid: ac3935561a02079469b35680c97282a9,
+        type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 273bf49b5fa07b54a8d0da4259007440,
+        type: 3}
     - target: {fileID: 4621651504312548118, guid: ac3935561a02079469b35680c97282a9,
         type: 3}
       propertyPath: m_Name
