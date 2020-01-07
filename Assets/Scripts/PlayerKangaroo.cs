@@ -25,6 +25,10 @@ public class PlayerKangaroo : MonoBehaviour
     private int uppercutWait = 0;       //Time spent in uppercut stage 1. stages 2,3,4 are based on whether the roo is rising or falling
 
     public GameObject hitbox;
+    public GameObject leftPunchSP;      //left punch spawn point for hitboxes
+    public GameObject rightPunchSP;           //right punch spawn point for hitboxes
+    public GameObject leftUppercutSP;      //left punch spawn point for hitboxes
+    public GameObject rightUppercutSP;           //right punch spawn point for hitboxes
 
     //public int punchState = 0; //set to 0 for first state, 1 for punching state and 2 for end state. -1 for if not punching.
     public enum PunchState { notPunching, windUp, punch, cooldown };
@@ -93,13 +97,13 @@ public class PlayerKangaroo : MonoBehaviour
                     rb.velocity = new Vector3(rb.velocity.x, 0.0f, rb.velocity.z);
                 }
             }
+            canMove = false;
             
 
         }
 
         if (isPunching)
         {
-            canMove = false;
             if(isUppercut)
             {
                 switch(curUppercutState)
@@ -118,6 +122,7 @@ public class PlayerKangaroo : MonoBehaviour
                             uppercutWait = 0;
                             thisAnimator.SetInteger("uppercutState", 1);
                             curUppercutState = UppercutState.rising;
+                            canMove = true;
                         }
                         break;
                     case UppercutState.rising:
@@ -127,7 +132,6 @@ public class PlayerKangaroo : MonoBehaviour
                             thisAnimator.SetInteger("uppercutState", 0);
                             isPunching = false;
                             isUppercut = false;
-                            canMove = true;
                             curUppercutState = UppercutState.notUppercut;
                         }
                         break;
@@ -256,11 +260,33 @@ public class PlayerKangaroo : MonoBehaviour
         {
             movement = new Vector3(0.0f, 1.0f, 0.0f);
             moveSpeed = punchSpeed;
+            //Creates hit boxes
+            if(dirFacing == -1)
+            {
+                var newHitbox = Instantiate(hitbox, leftUppercutSP.transform.position, Quaternion.identity);
+                Destroy(newHitbox, 0.1f);
+            }
+            else if(dirFacing == 1)
+            {
+                var newHitbox = Instantiate(hitbox, rightUppercutSP.transform.position, Quaternion.identity);
+                Destroy(newHitbox, 0.1f);
+            }
         }
         else if (curPunchState == PunchState.punch)
         {
             movement = new Vector3(dirFacing, 0.0f, 0.0f);
             moveSpeed = punchSpeed;
+            if(dirFacing == -1)
+            {
+                var newHitbox = Instantiate(hitbox, leftPunchSP.transform.position, Quaternion.identity);
+                Destroy(newHitbox, 0.1f);
+            }
+            else if(dirFacing == 1)
+            {
+                var newHitbox = Instantiate(hitbox, rightPunchSP.transform.position, Quaternion.identity);
+                Destroy(newHitbox, 0.1f);
+            }
+            
         }
         else// if (curPunchState == PunchState.notPunching)// if(curPunchState !=)
         {
