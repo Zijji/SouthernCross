@@ -257,6 +257,7 @@ MonoBehaviour:
   launchCharge: 50
   punchCooldown: 100
   uppercutCooldown: 100
+  hitbox: {fileID: 0}
   punchSpeed: 50
   thisAnimator: {fileID: 0}
 --- !u!212 &590202073
@@ -1643,7 +1644,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2065069767}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 1.99, y: 5.5299997, z: -42.82}
+  m_LocalPosition: {x: 2.94, y: 1.41, z: -20}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -1761,6 +1762,12 @@ PrefabInstance:
       propertyPath: uppercutCooldown
       value: 4
       objectReference: {fileID: 0}
+    - target: {fileID: 4621651504312548114, guid: ac3935561a02079469b35680c97282a9,
+        type: 3}
+      propertyPath: hitbox
+      value: 
+      objectReference: {fileID: 3112776045550699522, guid: 897bf01ec65d93c4aaec1f9f09ad4651,
+        type: 3}
     - target: {fileID: 4621651504312548115, guid: ac3935561a02079469b35680c97282a9,
         type: 3}
       propertyPath: m_FlipX

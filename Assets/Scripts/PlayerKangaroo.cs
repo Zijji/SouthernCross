@@ -24,6 +24,8 @@ public class PlayerKangaroo : MonoBehaviour
     public int uppercutCooldown = 4;       //Time spent in uppercut stage 1. stages 2,3,4 are based on whether the roo is rising or falling
     private int uppercutWait = 0;       //Time spent in uppercut stage 1. stages 2,3,4 are based on whether the roo is rising or falling
 
+    public GameObject hitbox;
+
     //public int punchState = 0; //set to 0 for first state, 1 for punching state and 2 for end state. -1 for if not punching.
     public enum PunchState { notPunching, windUp, punch, cooldown };
     private PunchState curPunchState = PunchState.notPunching;
@@ -61,7 +63,7 @@ public class PlayerKangaroo : MonoBehaviour
         {
             onGround = true;
         }
-
+        
         /*
         Punching code
 
