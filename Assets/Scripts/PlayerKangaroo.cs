@@ -14,7 +14,7 @@ public class PlayerKangaroo : MonoBehaviour
     public bool isPunching;
     public bool isUppercut;
     public bool canMove; //if false, stops player movement inputs from working.
-    
+    public float bounceSpeed;
     public int punchCharge = 50;
     private int resetPunchCharge;
     public int launchCharge = 50;
@@ -299,5 +299,16 @@ public class PlayerKangaroo : MonoBehaviour
         punchCooldown = resetPunchCooldown;
         isPunching = false;
         canMove = true;
+    }
+
+    void OnCollisionEnter(Collision col){
+        if(col.gameObject.CompareTag("Bounce") || col.gameObject.CompareTag("Bluebottle") || col.gameObject.CompareTag("Enemy")){
+            rb.AddForce(0, bounceSpeed, 0);
+        }
+        if(col.gameObject.CompareTag("Bluebottle")){
+            //kills the bluebottle
+            Destroy(col.transform.parent.gameObject);
+        }
+        
     }
 }
