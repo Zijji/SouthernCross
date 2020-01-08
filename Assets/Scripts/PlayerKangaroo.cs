@@ -91,6 +91,7 @@ public class PlayerKangaroo : MonoBehaviour
             if (Input.GetAxis("Vertical") > 0)
             {
                 isUppercut = true;
+                rb.velocity = new Vector3(rb.velocity.x, 0.0f, rb.velocity.z);
             }
             else
             {
@@ -117,6 +118,7 @@ public class PlayerKangaroo : MonoBehaviour
                         curUppercutState = UppercutState.uppercut;
                         uppercutWait = uppercutCooldown;
                         thisAnimator.SetBool("isUppercut", true);
+                        
                         break;
                     case UppercutState.windUp:      //Note: Does not use windup right now, may need it in future.
                         break;
@@ -247,6 +249,9 @@ public class PlayerKangaroo : MonoBehaviour
 
         if (onGround && Input.GetButton("Jump") && canMove)
         {
+            
+            //Zeroes out rb.velocity
+            rb.velocity = new Vector3(rb.velocity.x, 0.0f, rb.velocity.z);
             rb.velocity += Vector3.up * Time.deltaTime * jumpPower;
             //thisAnimator.SetBool("isJumping", true);
         }
