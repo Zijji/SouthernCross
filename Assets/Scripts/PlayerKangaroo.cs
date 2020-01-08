@@ -63,9 +63,14 @@ public class PlayerKangaroo : MonoBehaviour
     {
         //Calculates onGround to prevent falling while punching in mid air.
         bool onGround = false;
-        if (Physics.Raycast(transform.position, -Vector3.up, disGround + 0.1f))  //source: https://answers.unity.com/questions/196381/how-do-i-check-if-my-rigidbody-player-is-grounded.html
+        RaycastHit getHit;
+        if (Physics.Raycast(transform.position, -Vector3.up, out getHit, disGround + 0.1f ))  //source: https://answers.unity.com/questions/196381/how-do-i-check-if-my-rigidbody-player-is-grounded.html
         {
-            onGround = true;
+            if(getHit.collider.gameObject.tag != "Hitbox")
+            {
+                onGround = true;
+
+            }
         }
         
         /*
