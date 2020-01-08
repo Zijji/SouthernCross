@@ -10,7 +10,6 @@ public class PlayerKangaroo : MonoBehaviour
     public float disGround;
     public float jumpPower;
     public float xdrag;
-
     public bool isPunching;
     public bool isUppercut;
     public bool canMove; //if false, stops player movement inputs from working.
@@ -22,7 +21,9 @@ public class PlayerKangaroo : MonoBehaviour
     public int punchCooldown = 100;
     private int resetPunchCooldown;
     public int uppercutCooldown = 4;       //Time spent in uppercut stage 1. stages 2,3,4 are based on whether the roo is rising or falling
-    private int uppercutWait = 0;       //Time spent in uppercut stage 1. stages 2,3,4 are based on whether the roo is rising or falling
+    private int uppercutWait = 0;
+    private bool inSand = false;
+    public float sandSpeed;       //Time spent in uppercut stage 1. stages 2,3,4 are based on whether the roo is rising or falling
 
     public GameObject hitbox;
 
@@ -262,6 +263,9 @@ public class PlayerKangaroo : MonoBehaviour
             movement = new Vector3(dirFacing, 0.0f, 0.0f);
             moveSpeed = punchSpeed;
         }
+        else if(inSand){
+            moveSpeed = sandSpeed;
+        }
         else// if (curPunchState == PunchState.notPunching)// if(curPunchState !=)
         {
             moveSpeed = speed;
@@ -291,7 +295,6 @@ public class PlayerKangaroo : MonoBehaviour
         isPunching = false;
     }
 
-
     public void resetValues()
     {//for use when punching is done.
         punchCharge = resetPunchCharge;
@@ -302,13 +305,28 @@ public class PlayerKangaroo : MonoBehaviour
     }
 
     void OnCollisionEnter(Collision col){
+        //bouncing
         if(col.gameObject.CompareTag("Bounce") || col.gameObject.CompareTag("Bluebottle") || col.gameObject.CompareTag("Enemy")){
             rb.AddForce(0, bounceSpeed, 0);
+            if(col.gameObject.CompareTag("Bluebottle")){
+                //kills the bluebottle
+                Destroy(col.transform.parent.gameObject);
+            }
         }
-        if(col.gameObject.CompareTag("Bluebottle")){
-            //kills the bluebottle
-            Destroy(col.transform.parent.gameObject);
+        //sand (May have issue if an enemy collides with the player, but shouldn't be too big a deal. Fingers crossed.)
+        if(!col.gameObject.CompareTag("Sand")){
+            Debug.Log("Not in sand");
+            inSand = false;
         }
-        
+        if(col.gameObject.CompareTag("Sand")){
+            Debug.Log("In sand");
+            inSand = true;
+        }
+    }
+    void onCollisionExit(Collision col){
+        if(col.gameObject.CompareTag("Sand")){
+            Debug.Log("Not in sand");
+            inSand = false;
+        }
     }
 }

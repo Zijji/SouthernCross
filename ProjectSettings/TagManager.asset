@@ -9,6 +9,7 @@ TagManager:
   - Bounce
   - Enemy
   - Bluebottle
+  - Sand
   layers:
   - Default
   - TransparentFX
