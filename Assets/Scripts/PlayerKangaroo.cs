@@ -22,7 +22,7 @@ public class PlayerKangaroo : MonoBehaviour
     private int resetPunchCooldown;
     public int uppercutCooldown = 4;       //Time spent in uppercut stage 1. stages 2,3,4 are based on whether the roo is rising or falling
     private int uppercutWait = 0;
-    private bool inSand = false;
+    public bool inSand = false; //public so that the magpie enemy can sense it.
     public float sandSpeed;       //Time spent in uppercut stage 1. stages 2,3,4 are based on whether the roo is rising or falling
 
     public GameObject hitbox;
@@ -313,9 +313,8 @@ public class PlayerKangaroo : MonoBehaviour
                 Destroy(col.transform.parent.gameObject);
             }
         }
-        //sand (May have issue if an enemy collides with the player, but shouldn't be too big a deal. Fingers crossed.)
-        if(!col.gameObject.CompareTag("Sand")){
-            Debug.Log("Not in sand");
+        //sand (May have issue if an enemy collides with the player, but shouldn't be too big a deal as the player will take damage anyway. Fingers crossed.)
+        if(!col.gameObject.CompareTag("Sand")){// && !col.gameObject.CompareTag("Enemy")){
             inSand = false;
         }
         if(col.gameObject.CompareTag("Sand")){
@@ -325,7 +324,7 @@ public class PlayerKangaroo : MonoBehaviour
     }
     void onCollisionExit(Collision col){
         if(col.gameObject.CompareTag("Sand")){
-            Debug.Log("Not in sand");
+            
             inSand = false;
         }
     }
