@@ -39,6 +39,7 @@ public class PlayerKangaroo : MonoBehaviour
     private UppercutState curUppercutState = UppercutState.notUppercut;
     
     public float punchSpeed = 50f;
+    public float walkAnimSpeed = 0.2f;
     public Animator thisAnimator;
 
     private Rigidbody rb;
@@ -208,6 +209,7 @@ public class PlayerKangaroo : MonoBehaviour
 
         //flipping
         float moveHor = 0;//moved this here
+        //thisAnimator.speed = 0.0f;
         if (canMove)
         {
             //float moveHor = 0; //moved outside of scope
@@ -215,12 +217,24 @@ public class PlayerKangaroo : MonoBehaviour
             {
                 moveHor = -1;
                 this.GetComponent<SpriteRenderer>().flipX = false;
+                //thisAnimator.speed = walkAnimSpeed;
+                thisAnimator.SetBool("isMoving", true);
+                //thisAnimator.Play("KangarooIdle", 0, 0.0f);
             }
             else if (Input.GetKey(KeyCode.RightArrow))
             {
                 moveHor = 1;
                 this.GetComponent<SpriteRenderer>().flipX = true;
+                //thisAnimator.speed = walkAnimSpeed;
+                //thisAnimator.Play("KangarooIdle", 0, 0.0f);
+                thisAnimator.SetBool("isMoving", true);
             }
+            else
+            {
+                thisAnimator.SetBool("isMoving", false);
+                //thisAnimator.Stop("KangarooIdle");
+            }
+            
         }
         /*
         if(moveHorCur != moveHor)

@@ -343,6 +343,7 @@ MonoBehaviour:
   leftUppercutSP: {fileID: 0}
   rightUppercutSP: {fileID: 0}
   punchSpeed: 50
+  walkAnimSpeed: 0.2
   thisAnimator: {fileID: 0}
 --- !u!212 &590202073
 SpriteRenderer:
@@ -1932,6 +1933,11 @@ PrefabInstance:
       propertyPath: rightUppercutSP
       value: 
       objectReference: {fileID: 248072276}
+    - target: {fileID: 4621651504312548114, guid: ac3935561a02079469b35680c97282a9,
+        type: 3}
+      propertyPath: walkAnimSpeed
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4621651504312548115, guid: ac3935561a02079469b35680c97282a9,
         type: 3}
       propertyPath: m_FlipX
