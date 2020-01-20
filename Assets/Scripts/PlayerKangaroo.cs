@@ -64,13 +64,17 @@ public class PlayerKangaroo : MonoBehaviour
     {
         //Calculates onGround to prevent falling while punching in mid air.
         bool onGround = false;
+        bool onBouncePad = false;   //True if on bounce pad, disables uppercut while on bouncepad
         RaycastHit getHit;
         if (Physics.Raycast(transform.position, -Vector3.up, out getHit, disGround + 0.1f ))  //source: https://answers.unity.com/questions/196381/how-do-i-check-if-my-rigidbody-player-is-grounded.html
         {
             if(getHit.collider.gameObject.tag != "Hitbox")
             {
                 onGround = true;
-
+            }
+            if(getHit.collider.gameObject.tag == "Bouncepad")
+            {
+                onBouncePad = true;
             }
         }
         
@@ -84,7 +88,8 @@ public class PlayerKangaroo : MonoBehaviour
         */
 
         if (Input.GetButton("Fire1")
-        && (!isPunching))
+        && (!isPunching)
+        && (!onBouncePad))
         {
             isPunching = true;//activates later code;
             //Note: isPunching is active no matter what the punch, isUppercut only activates when uppercut punching
@@ -232,6 +237,7 @@ public class PlayerKangaroo : MonoBehaviour
             else
             {
                 thisAnimator.SetBool("isMoving", false);
+                //thisAnimator.
                 //thisAnimator.Stop("KangarooIdle");
             }
             
@@ -334,7 +340,6 @@ public class PlayerKangaroo : MonoBehaviour
         }
         */
     }
-
     public void EndPunchAnimation()
     {
         thisAnimator.SetBool("isPunching", false);
