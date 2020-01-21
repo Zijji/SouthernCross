@@ -1707,13 +1707,15 @@ GameObject:
   - component: {fileID: 2048763216}
   - component: {fileID: 2048763217}
   - component: {fileID: 2048763218}
-  m_Layer: 0
+  - component: {fileID: 2048763220}
+  - component: {fileID: 2048763219}
+  m_Layer: 8
   m_Name: DropBear
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!212 &2048763212
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1854,7 +1856,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2048763211}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 80844988bdf8a3f40becd3b06047fa05, type: 3}
   m_Name: 
@@ -1866,6 +1868,35 @@ MonoBehaviour:
   canUppercut: 1
   launchSpeedX: 2.5
   launchSpeedY: 5.5
+--- !u!114 &2048763219
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2048763211}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2bf16ddbf18346549bf12b88cce3a6f3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isAlive: 1
+  launchSpeedX: 2.5
+  launchSpeedY: 5.5
+--- !u!114 &2048763220
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2048763211}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa105d98dc92fcb45b2a689953fc8b03, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isPunched: 0
+  punchType: 0
 --- !u!1 &2065069767
 GameObject:
   m_ObjectHideFlags: 0
