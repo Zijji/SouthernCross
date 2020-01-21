@@ -294,11 +294,13 @@ public class PlayerKangaroo : MonoBehaviour
             if(dirFacing == -1)
             {
                 var newHitbox = Instantiate(hitbox, leftUppercutSP.transform.position, Quaternion.identity);
+                newHitbox.GetComponent<Hitbox>().hitboxType = 2;
                 Destroy(newHitbox, 0.1f);
             }
             else if(dirFacing == 1)
             {
                 var newHitbox = Instantiate(hitbox, rightUppercutSP.transform.position, Quaternion.identity);
+                newHitbox.GetComponent<Hitbox>().hitboxType = 3;
                 Destroy(newHitbox, 0.1f);
             }
         }
@@ -309,14 +311,15 @@ public class PlayerKangaroo : MonoBehaviour
             if(dirFacing == -1)
             {
                 var newHitbox = Instantiate(hitbox, leftPunchSP.transform.position, Quaternion.identity);
+                newHitbox.GetComponent<Hitbox>().hitboxType = 0;
                 Destroy(newHitbox, 0.1f);
             }
             else if(dirFacing == 1)
             {
                 var newHitbox = Instantiate(hitbox, rightPunchSP.transform.position, Quaternion.identity);
+                newHitbox.GetComponent<Hitbox>().hitboxType = 1;
                 Destroy(newHitbox, 0.1f);
             }
-            
         }
         else// if (curPunchState == PunchState.notPunching)// if(curPunchState !=)
         {
